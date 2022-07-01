@@ -1,10 +1,13 @@
 package com.example.networkchat;
 //created by PugaevDenis
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
+
 /*
 Задача:
  Создать окно для клиентской части чата: большое текстовое поле для отображения переписки в центре окна.

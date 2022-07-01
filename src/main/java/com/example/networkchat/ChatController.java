@@ -2,6 +2,7 @@ package com.example.networkchat;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -17,13 +18,11 @@ public class ChatController {
     private TextField textInputField;
 
     @FXML
-    public void  buttonSend() {
+    public void buttonSend() {
         String text = textInputField.getText();
         if (!textInputField.getText().isEmpty()) {
-           addMessage(text);
+            addMessage(text);
             textInputField.clear();
-
-
         }
     }
 
@@ -31,9 +30,10 @@ public class ChatController {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
 
-        textArea.appendText(  nickName + " (" +dtf.format(now) + "): \n" +  message + "\n");
+        textArea.appendText(nickName + " (" + dtf.format(now) + "): \n" + message + "\n");
         textArea.selectPositionCaret(textArea.getLength());
     }
+
     public void handleEnterPressed(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
             buttonSend();
