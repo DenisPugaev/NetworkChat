@@ -1,6 +1,8 @@
 package com.example.networkchat;
 //created by PugaevDenis
 
+import com.example.networkchat.controllers.ChatController;
+import com.example.networkchat.models.Network;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,13 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-/*
-Задача:
- Создать окно для клиентской части чата: большое текстовое поле для отображения переписки в центре окна.
-Однострочное текстовое поле для ввода сообщений и кнопка для отсылки сообщений на нижней панели. Сообщение должно
-отсылаться либо по нажатию кнопки на форме, либо по нажатию кнопки Enter. При «отсылке» сообщение перекидывается из
-нижнего поля в центральное.
- */
+
 public class ChatApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -25,7 +21,16 @@ public class ChatApplication extends Application {
         stage.setTitle("Chat");
         stage.setScene(scene);
         stage.centerOnScreen();
+        stage.setAlwaysOnTop(true);
         stage.show();
+
+        Network network = new Network();
+        ChatController chatController = fxmlLoader.getController();
+        chatController.setNetwork(network);
+
+        network.connect();
+        network.waitMessage(chatController);
+
     }
 
     public static void main(String[] args) {

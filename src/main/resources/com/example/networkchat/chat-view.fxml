@@ -11,61 +11,48 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.networkchat.ChatController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.networkchat.controllers.ChatController">
     <center>
-        <SplitPane dividerPositions="0.8668341708542714" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0"
-                   BorderPane.alignment="CENTER">
+        <SplitPane dividerPositions="0.8668341708542714" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="290.0" prefWidth="447.0">
-                <SplitPane dividerPositions="0.15294117647058825" orientation="VERTICAL" prefHeight="296.0"
-                           prefWidth="447.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0"
-                           AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                <SplitPane dividerPositions="0.15294117647058825" orientation="VERTICAL" prefHeight="296.0" prefWidth="447.0" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                        <Label alignment="CENTER" layoutX="144.0" layoutY="20.0" style="-fx-background-color: #041f4d;"
-                               text="Chat" textFill="#90aeeb" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Label layoutX="144.0" layoutY="20.0" prefHeight="51.0" prefWidth="92.0" text="ChaT" textFill="#6a78f2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="353.0" AnchorPane.topAnchor="0.0">
                             <font>
-                                <Font name="Arial Bold" size="36.0"/>
+                                <Font name="MS Outlook" size="21.0" />
                             </font>
                         </Label>
+                  <Label fx:id="usernameTitle" alignment="CENTER_RIGHT" layoutX="394.0" layoutY="17.0" text="User" textFill="#506de1" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="353.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font name="MS Outlook" size="21.0" />
+                     </font>
+                  </Label>
                     </AnchorPane>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                        <TextArea fx:id="textArea" editable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0"
-                                  prefWidth="200.0" style="-fx-background-color: #A9A9A9;" wrapText="true"
-                                  AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0"
-                                  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TextArea fx:id="textArea" editable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #A9A9A9;" wrapText="true" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <font>
-                                <Font name="Dubai Medium" size="16.0"/>
+                                <Font name="Dubai Medium" size="16.0" />
                             </font>
                             <cursor>
-                                <Cursor fx:constant="S_RESIZE"/>
+                                <Cursor fx:constant="S_RESIZE" />
                             </cursor>
                         </TextArea>
                     </AnchorPane>
                 </SplitPane>
             </AnchorPane>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                <SplitPane dividerPositions="0.8247191011235955" layoutY="-3.0" prefHeight="86.0" prefWidth="447.0"
-                           AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                           AnchorPane.topAnchor="-10.0">
+                <SplitPane dividerPositions="0.8247191011235955" layoutY="-3.0" prefHeight="86.0" prefWidth="447.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-10.0">
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                        <TextField fx:id="textInputField" layoutX="108.0" layoutY="28.0"
-                                   onKeyPressed="#handleEnterPressed" promptText="Введите текст сообщения..."
-                                   AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-                                   AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <TextField fx:id="textInputField" layoutX="108.0" layoutY="5.0" onKeyPressed="#handleEnterPressed" prefHeight="53.0" prefWidth="364.0" promptText="Введите текст сообщения..." AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
                             <font>
-                                <Font name="Arial" size="14.0"/>
+                                <Font name="Arial" size="14.0" />
                             </font>
                         </TextField>
                     </AnchorPane>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                        <Button alignment="CENTER" layoutX="12.0" layoutY="28.0" mnemonicParsing="false"
-                                onAction="#buttonSend" style="-fx-background-color: #5b7fa1;" text="ОТПРАВИТЬ"
-                                textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0"
-                                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <Button alignment="CENTER" layoutX="12.0" layoutY="28.0" mnemonicParsing="false" onAction="#sendMessage" style="-fx-background-color: #5b7fa1;" text="ОТПРАВИТЬ" textAlignment="CENTER" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="2.0">
                             <font>
-                                <Font name="Arial Black" size="15.0"/>
+                                <Font name="Arial Black" size="15.0" />
                             </font>
                         </Button>
                     </AnchorPane>
@@ -74,7 +61,6 @@
         </SplitPane>
     </center>
     <left>
-        <ListView prefHeight="400.0" prefWidth="151.0" style="-fx-background-color: #5b7fa1;"
-                  BorderPane.alignment="CENTER"/>
+        <ListView fx:id="userList" prefHeight="400.0" prefWidth="151.0" style="-fx-background-color: #B0C4DE;" BorderPane.alignment="CENTER" />
     </left>
 </BorderPane>
