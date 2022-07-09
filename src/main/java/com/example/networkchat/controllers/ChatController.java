@@ -69,7 +69,7 @@ public class ChatController {
     @FXML
     void initialize() {
         textArea.setEditable(false);
-        userList.setItems(observableArrayList("Гость", "Mr.Duck", "Как я сюда подключился?0_о", "Shatun_kot", "Про100", "Левый тип", "Сын подруги"));
+        userList.setItems(observableArrayList("Пользователь1", "Пользователь2", "Пользователь3", "Пользователь4", "Пользователь5"));
 
     }
 

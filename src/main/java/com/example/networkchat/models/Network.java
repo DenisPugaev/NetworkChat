@@ -1,6 +1,5 @@
 package com.example.networkchat.models;
 
-import com.example.networkchat.ChatApplication;
 import com.example.networkchat.controllers.ChatController;
 
 import java.io.DataInputStream;
@@ -10,14 +9,15 @@ import java.net.Socket;
 
 public class Network {
     public static final String DEFAULT_HOST = "localhost";
-    public static final int DEFAULT_PORT = 8186;
+    public static final int DEFAULT_PORT = 8888;
 
-
+    private static String sender;
     private final String host;
     private final int port;
     private DataOutputStream out;
     private DataInputStream in;
     private ChatController chatController;
+
 
     public Network(String host, int port) {
         this.host = host;
@@ -27,7 +27,9 @@ public class Network {
     public Network() {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
-
+ public String getSender(){
+        return sender;
+    }
     public void connect() {
         try {
             Socket socket = new Socket(host, port);
@@ -55,7 +57,7 @@ public class Network {
                     String message;
                     message = in.readUTF();
                     System.out.println("Сервер: " + message);
-                    chatController.addMessageServer(message);
+                    chatController.addMessage(message);
 
                 }
             } catch (IOException e) {
