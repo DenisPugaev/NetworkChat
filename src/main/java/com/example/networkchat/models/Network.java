@@ -11,13 +11,11 @@ public class Network {
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 8888;
 
-    private static String sender;
     private final String host;
     private final int port;
     private DataOutputStream out;
     private DataInputStream in;
     private ChatController chatController;
-
 
 
     public Network(String host, int port) {
@@ -54,10 +52,10 @@ public class Network {
             try {
                 while (true) {
 
-                    String  message = in.readUTF();
+                    String message = in.readUTF();
 //
                     chatController.addMessage(message);
-                    System.out.println("Сервер: "+message);
+                    System.out.println("Сервер: " + message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -66,7 +64,6 @@ public class Network {
         t.setDaemon(true);
         t.start();
     }
-
 
 
     public DataOutputStream getOut() {
@@ -84,7 +81,6 @@ public class Network {
     public void setIn(DataInputStream in) {
         this.in = in;
     }
-
 
 
 }

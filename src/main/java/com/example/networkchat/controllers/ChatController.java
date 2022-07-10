@@ -44,7 +44,7 @@ public class ChatController {
 
     public void addMessage(String message) {
 //        textArea.appendText(nickName + " (" + dtf.format(now) + "): \n" + message + "\n");
-        textArea.setText(new StringBuilder(textArea.getText()).insert(0,  nickName+ " (" + dtf.format(now) + "): \n" + message + "\n").toString());
+        textArea.setText(new StringBuilder(textArea.getText()).insert(0, nickName + " (" + dtf.format(now) + "): \n" + message + "\n").toString());
         System.lineSeparator();
     }
 
