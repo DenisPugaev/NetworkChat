@@ -43,10 +43,8 @@ public class ChatController {
     }
 
     public void addMessage(String message) {
-
-
 //        textArea.appendText(nickName + " (" + dtf.format(now) + "): \n" + message + "\n");
-        textArea.setText(new StringBuilder(textArea.getText()).insert(0, nickName + " (" + dtf.format(now) + "): \n" + message + "\n").toString());
+        textArea.setText(new StringBuilder(textArea.getText()).insert(0,  nickName+ " (" + dtf.format(now) + "): \n" + message + "\n").toString());
         System.lineSeparator();
     }
 
@@ -60,11 +58,6 @@ public class ChatController {
         this.network = network;
     }
 
-    public void addMessageServer(String message) {
-
-        textArea.setText(new StringBuilder(textArea.getText()).insert(0, "Сервер: " + " (" + dtf.format(now) + "): \n" + message + "\n").toString());
-        System.lineSeparator();
-    }
 
     @FXML
     void initialize() {

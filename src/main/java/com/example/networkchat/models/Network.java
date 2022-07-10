@@ -19,6 +19,7 @@ public class Network {
     private ChatController chatController;
 
 
+
     public Network(String host, int port) {
         this.host = host;
         this.port = port;
@@ -27,9 +28,7 @@ public class Network {
     public Network() {
         this(DEFAULT_HOST, DEFAULT_PORT);
     }
- public String getSender(){
-        return sender;
-    }
+
     public void connect() {
         try {
             Socket socket = new Socket(host, port);
@@ -54,11 +53,11 @@ public class Network {
         Thread t = new Thread(() -> {
             try {
                 while (true) {
-                    String message;
-                    message = in.readUTF();
-                    System.out.println("Сервер: " + message);
-                    chatController.addMessage(message);
 
+                    String  message = in.readUTF();
+//
+                    chatController.addMessage(message);
+                    System.out.println("Сервер: "+message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -67,6 +66,8 @@ public class Network {
         t.setDaemon(true);
         t.start();
     }
+
+
 
     public DataOutputStream getOut() {
         return out;
@@ -83,4 +84,7 @@ public class Network {
     public void setIn(DataInputStream in) {
         this.in = in;
     }
+
+
+
 }
