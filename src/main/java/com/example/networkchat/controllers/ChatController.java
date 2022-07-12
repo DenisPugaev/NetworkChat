@@ -3,49 +3,89 @@ package com.example.networkchat.controllers;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.example.networkchat.ChatApplication;
 import com.example.networkchat.models.Network;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import static javafx.collections.FXCollections.observableArrayList;
 
 
 public class ChatController {
-    private String nickName = "You";
+
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
     LocalDateTime now = LocalDateTime.now();
     @FXML
     private Label usernameTitle;
     @FXML
-    private ListView<String> userList;
+    private ListView<String> usersList;
     @FXML
-    private TextArea textArea;
+    private TextArea chatHistory;
     @FXML
-    private TextField textInputField;
+    private TextField inputField;
+    @FXML
+    private Button sendButton;
     private Network network;
+    private String selectedRecipient;
+
+    private ChatApplication chatApplication;
+
 
     @FXML
+    void initialize() {
+        usersList.setItems(FXCollections.observableArrayList("mrDuck", "Martin_Shatun", "Важный_Гусь", "Perchik"
+                , "Bender", "DonPomidor"));
+        sendButton.setOnAction(event -> sendMessage());
+        inputField.setOnAction(event -> sendMessage());
+
+        usersList.setCellFactory(lv -> {
+            MultipleSelectionModel<String> selectionModel = usersList.getSelectionModel();
+            ListCell<String> cell = new ListCell<>();
+            cell.textProperty().bind(cell.itemProperty());
+            cell.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                usersList.requestFocus();
+                if (!cell.isEmpty()) {
+                    int index = cell.getIndex();
+                    if (selectionModel.getSelectedIndices().contains(index)) {
+                        selectionModel.clearSelection(index);
+                        selectedRecipient = null;
+                    } else {
+                        selectionModel.select(index);
+                        selectedRecipient = cell.getItem();
+                    }
+                    event.consume();
+                }
+            });
+            return cell;
+        });
+        chatHistory.setEditable(false);
+    }
+    @FXML
     public void sendMessage() {
-        String message = textInputField.getText();
-        if (!textInputField.getText().isEmpty()) {
-            addMessage(message);
-            textInputField.clear();
-            if (message.isEmpty()) {
-                return;
-            }
+        String message = inputField.getText().trim();
+        inputField.clear();
+
+        if (message.isEmpty()) {
+            return;
+        }
+        if (selectedRecipient != null) {
+            network.sendPrivateMessage(selectedRecipient, message);
+        } else {
             network.sendMessage(message);
         }
     }
 
-    public void addMessage(String message) {
-//        textArea.appendText(nickName + " (" + dtf.format(now) + "): \n" + message + "\n");
-        textArea.setText(new StringBuilder(textArea.getText()).insert(0, nickName + " (" + dtf.format(now) + "): \n" + message + "\n").toString());
-        System.lineSeparator();
+    public void addMessage(String sender, String message) {
+//
+        chatHistory.appendText(dtf.format(now));
+        chatHistory.appendText(System.lineSeparator());
+        chatHistory.appendText(String.format("%s: %s", sender, message));
+        chatHistory.appendText(System.lineSeparator());
+        chatHistory.appendText(System.lineSeparator());
     }
 
     public void handleEnterPressed(KeyEvent event) {
@@ -53,18 +93,26 @@ public class ChatController {
             sendMessage();
         }
     }
+    public void appendServerMessage( String message) {
+        chatHistory.appendText(String.format("Внимание! %s", message));
+        chatHistory.appendText(System.lineSeparator());
+        chatHistory.appendText(System.lineSeparator());
+    }
 
     public void setNetwork(Network network) {
         this.network = network;
     }
 
-
-    @FXML
-    void initialize() {
-        textArea.setEditable(false);
-        userList.setItems(observableArrayList("Пользователь1", "Пользователь2", "Пользователь3", "Пользователь4", "Пользователь5"));
-
+    public void setUsernameTitle(String usernameTitleStr) {
+        this.usernameTitle.setText(usernameTitleStr);
     }
 
+    public void setStartClient(ChatApplication chatApplication) {
+        this.chatApplication = chatApplication;
+    }
+
+    public ChatApplication getChatApplication() {
+        return chatApplication;
+    }
 }
 

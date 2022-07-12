@@ -1,43 +1,101 @@
 package com.example.networkchat;
 //created by PugaevDenis
 import com.example.networkchat.controllers.ChatController;
+import com.example.networkchat.controllers.SignController;
 import com.example.networkchat.models.Network;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 /*
 Задача:
-Написать консольный вариант клиент\серверного приложения, в котором пользователь может писать сообщения, как на
-клиентской стороне, так и на серверной. Т.е. если на клиентской стороне написать "Привет", нажать Enter то сообщение
-должно передаться на сервер и там отпечататься в консоли. Если сделать то же самое на серверной стороне, сообщение
-соответственно передается клиенту и печатается у него в консоли. Есть одна особенность, которую нужно учитывать: клиент
-или сервер может написать несколько сообщений подряд, такую ситуацию необходимо корректно обработать
-*/
+1. Разобраться с кодом.
+2. Сделать обновление списка пользователей в чате при отключении и подключении клиента
+*3. Добавить регистрацию пользователей
+*4. Добавить отключение неавторизованных пользователей по таймауту (120 сек. ждём после подключения клиента, и если он
+не авторизовался за это время, закрываем соединение).
+ */
 public class ChatApplication extends Application {
+    private Network network;
+    private Stage primaryStage;
+    private Stage authStage;
+    private ChatController chatController;
+    private SignController signController;
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ChatApplication.class.getResource("chat-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setMinWidth(760);
-        stage.setMinHeight(450);
-        stage.setTitle("Chat");
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.setAlwaysOnTop(true);
-        stage.show();
+        primaryStage = stage;
 
-        Network network = new Network();
-        ChatController chatController = fxmlLoader.getController();
-        chatController.setNetwork(network);
-
+        network = new Network();
+        network.setStartClient(this);
         network.connect();
-        network.waitMessage(chatController);
+
+        openAuthDialog();
+        createChatDialog();
+
+    }
+    private void openAuthDialog() throws IOException {
+        FXMLLoader authLoader = new FXMLLoader(ChatApplication.class.getResource("auth-view.fxml"));
+        authStage = new Stage();
+        Scene scene = new Scene(authLoader.load(), 600, 400);
+
+        authStage.setScene(scene);
+        authStage.initModality(Modality.WINDOW_MODAL);
+        authStage.initOwner(primaryStage);
+        authStage.setTitle("Авторизация");
+        authStage.setY(1400);
+        authStage.setX(650);
+        authStage.setAlwaysOnTop(true);
+        authStage.show();
+
+        SignController signController = authLoader.getController();
+
+        signController.setNetwork(network);
+        signController.setStartClient(this);
+    }
+
+    private void createChatDialog() throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(ChatApplication.class.getResource("chat-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+
+        primaryStage.setScene(scene);
+        primaryStage.setY(1400);
+        primaryStage.setX(650);
+        primaryStage.setAlwaysOnTop(true);
+
+
+
+        chatController = fxmlLoader.getController();
+        chatController.setNetwork(network);
+        chatController.setStartClient(this);
 
     }
 
-    public static void main(String[] args) {
+    public void openChatDialog() {
+        authStage.close();
+        primaryStage.show();
+        primaryStage.setTitle(network.getUsername());
+
+        network.waitMessage(chatController);
+        chatController.setUsernameTitle(network.getUsername());
+    }
+
+    public void showErrorAlert(String title, String errorMessage) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(errorMessage);
+        alert.show();
+    }
+
+    public void showInfoAlert(String title, String infoMessage) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(infoMessage);
+        alert.show();
+    }
+    public static void main (String[] args) {
         launch();
     }
 }
