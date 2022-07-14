@@ -18,6 +18,7 @@ public class Network {
     private static final String PRIVATE_MSG_CMD_PREFIX = "/pm"; // + username + msg
     private static final String STOP_SERVER_CMD_PREFIX = "/stop";
     private static final String END_CLIENT_CMD_PREFIX = "/end";
+    private static final String USERS_UPDATE_PREFIX = "/updateUsers";
 
     public static final String DEFAULT_HOST = "localhost";
     public static final int DEFAULT_PORT = 8888;
@@ -78,6 +79,7 @@ public class Network {
 
             if (response.startsWith(AUTHOK_CMD_PREFIX)) {
                 this.username = response.split("\\s+", 2)[1];
+
                 return null;
             } else {
                 return response.split("\\s+", 2)[1];
@@ -88,8 +90,11 @@ public class Network {
             return e.getMessage();
         }
     }
-    public void waitMessage(ChatController chatController) {
-        Thread t = new Thread(() -> {
+
+    public void waitMessage(ChatController chatController){
+  chatController.addUser(this.username);
+
+           Thread t = new Thread(() -> {
             try {
                 while (true) {
                     String message = in.readUTF();
@@ -117,14 +122,35 @@ public class Network {
                             String sender = parts[1];
                             String messageFromSender = parts[2];
 
-                            Platform.runLater(() -> chatController.addMessage("[pm]" + sender, messageFromSender));
-                        }
+                        Platform.runLater(() -> chatController.addMessage("[pm]" + sender, messageFromSender));
+                    }
                         case SERVER_MSG_CMD_PREFIX -> {
                             String[] parts = message.split("\\s+", 2);
                             String serverMessage = parts[1];
+                            String[] partsNoPrefix = serverMessage.split("\\s+", 4);
+                            String username = partsNoPrefix[1];
+                            String status = partsNoPrefix[2];
+
+
+                            chatController.statusUserInList(username,status);
+//                            out.writeUTF(String.format("%s %s %s", SERVER_MSG_CMD_PREFIX,"/update" , username));
+
 
                             chatController.appendServerMessage(serverMessage);
+
                         }
+                        case (USERS_UPDATE_PREFIX) ->{
+                            String[] parts = message.split("\\s+", 2);
+                            String serverMessage = parts[1];
+                            String[] usersList = serverMessage.split("\\s+");
+                            for (String name: usersList){
+
+                                chatController.addUser(name);
+                            }
+
+                        }
+
+
                     }
                 }
             } catch (IOException e) {

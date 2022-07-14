@@ -54,8 +54,12 @@ public class SignController {
 
         if (authErrorMessage == null) {
             chatApplication.openChatDialog();
-        } else {
+        }else if (authErrorMessage.equals("Программа на вашем хост-компьютере разорвала установленное подключение")) {
+                chatApplication.showErrorAlert("Таймаут подключения!","Истекло время ожидания подключения!");
+        }
+         else {
             chatApplication.showErrorAlert("Ошибка аутентификации", authErrorMessage);
+
         }
     }
 

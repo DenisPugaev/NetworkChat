@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import com.example.networkchat.ChatApplication;
 import com.example.networkchat.models.Network;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -22,8 +23,6 @@ public class ChatController {
     @FXML
     private Label usernameTitle;
     @FXML
-    private ListView<String> usersList;
-    @FXML
     private TextArea chatHistory;
     @FXML
     private TextField inputField;
@@ -34,11 +33,18 @@ public class ChatController {
 
     private ChatApplication chatApplication;
 
+    @FXML
+    private ListView<String> usersList;
+
+    ObservableList<String> users = FXCollections.observableArrayList();
+
 
     @FXML
     void initialize() {
-        usersList.setItems(FXCollections.observableArrayList("mrDuck", "Martin_Shatun", "Важный_Гусь", "Perchik"
-                , "Bender", "DonPomidor"));
+
+        usersList.editableProperty();
+        usersList.setItems(users);
+
         sendButton.setOnAction(event -> sendMessage());
         inputField.setOnAction(event -> sendMessage());
 
@@ -64,6 +70,7 @@ public class ChatController {
         });
         chatHistory.setEditable(false);
     }
+
     @FXML
     public void sendMessage() {
         String message = inputField.getText().trim();
@@ -93,7 +100,8 @@ public class ChatController {
             sendMessage();
         }
     }
-    public void appendServerMessage( String message) {
+
+    public void appendServerMessage(String message) {
         chatHistory.appendText(String.format("Внимание! %s", message));
         chatHistory.appendText(System.lineSeparator());
         chatHistory.appendText(System.lineSeparator());
@@ -114,5 +122,35 @@ public class ChatController {
     public ChatApplication getChatApplication() {
         return chatApplication;
     }
+
+    public void statusUserInList(String username, String status) {
+
+        if (status.equals("отключился")) {
+            users.remove(username);
+            System.out.println("users: " + users);
+        }
+
+        renewUsersList();
+
+
+
+    }
+
+    public void addUser(String username) {
+        if (!users.contains(username)) {
+            users.add(username);
+            System.out.println(users);
+        }
+        renewUsersList();
+    }
+
+
+    private void renewUsersList() {
+        usersList.getItems().removeAll();
+        usersList.setItems(users);
+        usersList.refresh();
+    }
+
+
 }
 

@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
+
 /*
 Задача:
 1. Разобраться с кодом.
@@ -19,6 +20,7 @@ import java.io.IOException;
 не авторизовался за это время, закрываем соединение).
  */
 public class ChatApplication extends Application {
+
     private Network network;
     private Stage primaryStage;
     private Stage authStage;
@@ -45,8 +47,8 @@ public class ChatApplication extends Application {
         authStage.initModality(Modality.WINDOW_MODAL);
         authStage.initOwner(primaryStage);
         authStage.setTitle("Авторизация");
-        authStage.setY(1400);
-        authStage.setX(650);
+        authStage.setY(200);
+        authStage.setX(400);
         authStage.setAlwaysOnTop(true);
         authStage.show();
 
@@ -61,8 +63,8 @@ public class ChatApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 
         primaryStage.setScene(scene);
-        primaryStage.setY(1400);
-        primaryStage.setX(650);
+        primaryStage.setY(100);
+        primaryStage.setX(100);
         primaryStage.setAlwaysOnTop(true);
 
 
@@ -76,6 +78,7 @@ public class ChatApplication extends Application {
     public void openChatDialog() {
         authStage.close();
         primaryStage.show();
+
         primaryStage.setTitle(network.getUsername());
 
         network.waitMessage(chatController);
@@ -84,6 +87,8 @@ public class ChatApplication extends Application {
 
     public void showErrorAlert(String title, String errorMessage) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setX(500);
+        alert.setY(0);
         alert.setTitle(title);
         alert.setHeaderText(errorMessage);
         alert.show();
