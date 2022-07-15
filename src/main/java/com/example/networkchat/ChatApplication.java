@@ -1,5 +1,6 @@
 package com.example.networkchat;
 //created by PugaevDenis
+
 import com.example.networkchat.controllers.ChatController;
 import com.example.networkchat.controllers.SignController;
 import com.example.networkchat.models.Network;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 
 /*
@@ -26,6 +28,7 @@ public class ChatApplication extends Application {
     private Stage authStage;
     private ChatController chatController;
     private SignController signController;
+
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
@@ -38,6 +41,7 @@ public class ChatApplication extends Application {
         createChatDialog();
 
     }
+
     private void openAuthDialog() throws IOException {
         FXMLLoader authLoader = new FXMLLoader(ChatApplication.class.getResource("auth-view.fxml"));
         authStage = new Stage();
@@ -66,7 +70,6 @@ public class ChatApplication extends Application {
         primaryStage.setY(100);
         primaryStage.setX(100);
         primaryStage.setAlwaysOnTop(true);
-
 
 
         chatController = fxmlLoader.getController();
@@ -100,7 +103,8 @@ public class ChatApplication extends Application {
         alert.setHeaderText(infoMessage);
         alert.show();
     }
-    public static void main (String[] args) {
+
+    public static void main(String[] args) {
         launch();
     }
 }

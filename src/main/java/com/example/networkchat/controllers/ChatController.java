@@ -133,7 +133,6 @@ public class ChatController {
         renewUsersList();
 
 
-
     }
 
     public void addUser(String username) {
