@@ -12,10 +12,13 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import lombok.extern.slf4j.Slf4j;
+
+
 
 import static javafx.collections.FXCollections.observableArrayList;
 
-
+@Slf4j
 public class ChatController {
 
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd.MM HH:mm:ss");
@@ -93,6 +96,8 @@ public class ChatController {
         chatHistory.appendText(String.format("%s: %s", sender, message));
         chatHistory.appendText(System.lineSeparator());
         chatHistory.appendText(System.lineSeparator());
+
+
     }
 
     public void handleEnterPressed(KeyEvent event) {
@@ -124,7 +129,6 @@ public class ChatController {
     }
 
     public void statusUserInList(String username, String status) {
-
         if (status.equals("отключился")) {
             users.remove(username);
             System.out.println("users: " + users);
@@ -141,6 +145,7 @@ public class ChatController {
             System.out.println(users);
         }
         renewUsersList();
+        log.info(" log usernameAdd= {} ",username);
     }
 
 
@@ -148,6 +153,7 @@ public class ChatController {
         usersList.getItems().removeAll();
         usersList.setItems(users);
         usersList.refresh();
+
     }
 
 

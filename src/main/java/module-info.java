@@ -1,6 +1,8 @@
 module com.example.networkchat {
     requires javafx.controls;
     requires javafx.fxml;
+    requires lombok;
+    requires org.slf4j;
 
 
     opens com.example.networkchat to javafx.fxml;

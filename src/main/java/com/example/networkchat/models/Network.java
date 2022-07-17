@@ -9,6 +9,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 public class Network {
     private static final String AUTH_CMD_PREFIX = "/auth"; // + login + password
     private static final String AUTHOK_CMD_PREFIX = "/authok"; // + username
@@ -49,7 +50,7 @@ public class Network {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Не удалось установить соединение с сервером!");
-            chatApplication.showErrorAlert("Ошибка подключения","Соединение не установлено");
+            chatApplication.showErrorAlert("Ошибка подключения", "Соединение не установлено");
         }
     }
 
@@ -59,9 +60,10 @@ public class Network {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Ошибка отправки сообщения!");
-            chatApplication.showErrorAlert("Ошибка подключения","Соединение не установлено");
+            chatApplication.showErrorAlert("Ошибка подключения", "Соединение не установлено");
         }
     }
+
     public void sendPrivateMessage(String recipient, String message) {
         try {
             out.writeUTF(String.format("%s %s %s", PRIVATE_MSG_CMD_PREFIX, recipient, message));
@@ -91,10 +93,10 @@ public class Network {
         }
     }
 
-    public void waitMessage(ChatController chatController){
-  chatController.addUser(this.username);
+    public void waitMessage(ChatController chatController) {
+        chatController.addUser(this.username);
 
-           Thread t = new Thread(() -> {
+        Thread t = new Thread(() -> {
             try {
                 while (true) {
                     String message = in.readUTF();
@@ -122,8 +124,8 @@ public class Network {
                             String sender = parts[1];
                             String messageFromSender = parts[2];
 
-                        Platform.runLater(() -> chatController.addMessage("[pm]" + sender, messageFromSender));
-                    }
+                            Platform.runLater(() -> chatController.addMessage("[pm]" + sender, messageFromSender));
+                        }
                         case SERVER_MSG_CMD_PREFIX -> {
                             String[] parts = message.split("\\s+", 2);
                             String serverMessage = parts[1];
@@ -132,18 +134,18 @@ public class Network {
                             String status = partsNoPrefix[2];
 
 
-                            chatController.statusUserInList(username,status);
+                            chatController.statusUserInList(username, status);
 //                            out.writeUTF(String.format("%s %s %s", SERVER_MSG_CMD_PREFIX,"/update" , username));
 
 
                             chatController.appendServerMessage(serverMessage);
 
                         }
-                        case (USERS_UPDATE_PREFIX) ->{
+                        case (USERS_UPDATE_PREFIX) -> {
                             String[] parts = message.split("\\s+", 2);
                             String serverMessage = parts[1];
                             String[] usersList = serverMessage.split("\\s+");
-                            for (String name: usersList){
+                            for (String name : usersList) {
 
                                 chatController.addUser(name);
                             }
