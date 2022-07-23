@@ -3,6 +3,8 @@ package com.example.networkchat.models;
 import com.example.networkchat.ChatApplication;
 import com.example.networkchat.controllers.ChatController;
 import javafx.application.Platform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -11,6 +13,7 @@ import java.net.Socket;
 
 
 public class Network {
+    private Logger log = LoggerFactory.getLogger(Network.class);
     private static final String AUTH_CMD_PREFIX = "/auth"; // + login + password
     private static final String AUTHOK_CMD_PREFIX = "/authok"; // + username
     private static final String AUTHERR_CMD_PREFIX = "/autherr"; // + error message
@@ -76,8 +79,10 @@ public class Network {
 
     public String sendAuthMessage(String login, String password) {
         try {
+            log.info("СообщениеAuth на сервер пароль и логин: " + login+" | "+password);
             out.writeUTF(String.format("%s %s %s", AUTH_CMD_PREFIX, login, password));
             String response = in.readUTF();
+            log.info("Сообщение-ответ от сервера: " + response);
 
             if (response.startsWith(AUTHOK_CMD_PREFIX)) {
                 this.username = response.split("\\s+", 2)[1];
@@ -100,6 +105,8 @@ public class Network {
             try {
                 while (true) {
                     String message = in.readUTF();
+                    log.info("Сообщение пришло с сервера: "+message);
+
 
                     String typeMessage = message.split("\\s+")[0];
                     if (!typeMessage.startsWith("/")) {

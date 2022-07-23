@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SignController {
 
+
     @FXML
     private TextField loginField;
 
@@ -53,6 +54,7 @@ public class SignController {
         }
 
         String authErrorMessage = network.sendAuthMessage(login, password);
+        log.info("authErrorMessage - "+authErrorMessage);
 
         if (authErrorMessage == null) {
             chatApplication.openChatDialog();

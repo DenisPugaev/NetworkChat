@@ -64,7 +64,7 @@ public class ChatApplication extends Application {
 
     private void createChatDialog() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ChatApplication.class.getResource("chat-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+        Scene scene = new Scene(fxmlLoader.load(), 700, 500);
 
         primaryStage.setScene(scene);
         primaryStage.setY(100);

@@ -35,6 +35,11 @@ public class ChatController {
     private String selectedRecipient;
 
     private ChatApplication chatApplication;
+    @FXML
+    private Button changeNickButton;
+    @FXML
+    private TextField inputNewNick;
+
 
     @FXML
     private ListView<String> usersList;
@@ -48,7 +53,10 @@ public class ChatController {
         usersList.editableProperty();
         usersList.setItems(users);
 
-        sendButton.setOnAction(event -> sendMessage());
+        changeNickButton.setOnAction(event -> changeNick());  //Смена ника!!!!
+        inputNewNick.setOnAction(event -> changeNick());
+
+       inputField.setOnAction(event -> sendMessage());
         inputField.setOnAction(event -> sendMessage());
 
         usersList.setCellFactory(lv -> {
@@ -154,6 +162,19 @@ public class ChatController {
         usersList.setItems(users);
         usersList.refresh();
 
+    }
+
+    @FXML
+    void changeNick() {
+        String message = inputNewNick.getText().trim();
+        inputNewNick.clear();
+
+        if (message.isEmpty()) {
+            return;
+        }
+           log.info("НИК из поля ввода - "+message);
+
+        /// нужно отправить Измененный ник в БД и обновить в списках!
     }
 
 
