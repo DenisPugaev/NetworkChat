@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 
 
 
-import static javafx.collections.FXCollections.observableArrayList;
 
 @Slf4j
 public class ChatController {
@@ -56,7 +55,7 @@ public class ChatController {
         changeNickButton.setOnAction(event -> changeNick());  //Смена ника!!!!
         inputNewNick.setOnAction(event -> changeNick());
 
-       inputField.setOnAction(event -> sendMessage());
+        inputField.setOnAction(event -> sendMessage());
         inputField.setOnAction(event -> sendMessage());
 
         usersList.setCellFactory(lv -> {
@@ -153,11 +152,11 @@ public class ChatController {
             System.out.println(users);
         }
         renewUsersList();
-        log.info(" log usernameAdd= {} ",username);
+//        log.info(" log usernameAdd= {} ",username);
     }
 
 
-    private void renewUsersList() {
+    public void renewUsersList() {
         usersList.getItems().removeAll();
         usersList.setItems(users);
         usersList.refresh();
@@ -166,17 +165,30 @@ public class ChatController {
 
     @FXML
     void changeNick() {
-        String message = inputNewNick.getText().trim();
+        String newNick = inputNewNick.getText().trim();
         inputNewNick.clear();
 
-        if (message.isEmpty()) {
+        if (newNick.isEmpty()) {
             return;
         }
-           log.info("НИК из поля ввода - "+message);
+        log.info("НИК из поля ввода - " + newNick);
 
-        /// нужно отправить Измененный ник в БД и обновить в списках!
+//        for (String u :users) {
+//            if(u.equals(this.users)){
+
+        int index = this.users.indexOf(this);
+        log.info("index- " + ((index) + 1));
+        this.users.set(index + 1, newNick);
+        setUsernameTitle(newNick);
+        network.sendServerMessage(newNick);
+        renewUsersList();
+
     }
 
-
 }
+
+
+
+
+
 

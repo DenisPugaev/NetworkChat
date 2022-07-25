@@ -13,7 +13,7 @@ import java.net.Socket;
 
 
 public class Network {
-    private Logger log = LoggerFactory.getLogger(Network.class);
+    private final Logger log = LoggerFactory.getLogger(Network.class);
     private static final String AUTH_CMD_PREFIX = "/auth"; // + login + password
     private static final String AUTHOK_CMD_PREFIX = "/authok"; // + username
     private static final String AUTHERR_CMD_PREFIX = "/autherr"; // + error message
@@ -76,10 +76,20 @@ public class Network {
         }
     }
 
+    public void sendServerMessage(String message) {
+        try {
+            log.info("Сообщение которое ушло на сервер: " + message);
+            out.writeUTF(String.format("%s %s", SERVER_MSG_CMD_PREFIX, message));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Ошибка при отправке сообщения");
+        }
+    }
+
 
     public String sendAuthMessage(String login, String password) {
         try {
-            log.info("СообщениеAuth на сервер пароль и логин: " + login+" | "+password);
+            log.info("СообщениеAuth на сервер пароль и логин: " + login + " | " + password);
             out.writeUTF(String.format("%s %s %s", AUTH_CMD_PREFIX, login, password));
             String response = in.readUTF();
             log.info("Сообщение-ответ от сервера: " + response);
@@ -99,13 +109,14 @@ public class Network {
     }
 
     public void waitMessage(ChatController chatController) {
+
         chatController.addUser(this.username);
 
         Thread t = new Thread(() -> {
             try {
                 while (true) {
                     String message = in.readUTF();
-                    log.info("Сообщение пришло с сервера: "+message);
+                    log.info("Сообщение пришло с сервера: " + message);
 
 
                     String typeMessage = message.split("\\s+")[0];
@@ -158,8 +169,6 @@ public class Network {
                             }
 
                         }
-
-
                     }
                 }
             } catch (IOException e) {
@@ -196,5 +205,9 @@ public class Network {
 
     public ChatApplication getStartClient() {
         return chatApplication;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
