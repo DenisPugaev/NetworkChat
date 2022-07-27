@@ -1,7 +1,10 @@
 package com.example.networkchat.controllers;
 
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.example.networkchat.ChatApplication;
 import com.example.networkchat.models.Network;
@@ -13,8 +16,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lombok.extern.slf4j.Slf4j;
-
-
 
 
 @Slf4j
@@ -114,7 +115,7 @@ public class ChatController {
     }
 
     public void appendServerMessage(String message) {
-        chatHistory.appendText(String.format("Внимание! %s", message));
+        chatHistory.appendText(String.format(message));
         chatHistory.appendText(System.lineSeparator());
         chatHistory.appendText(System.lineSeparator());
     }
@@ -185,7 +186,54 @@ public class ChatController {
 
     }
 
+    public void writeHistoryChat() {
+        try {
+            File history = new File("src/main/resources/lib/chatHistory.txt");
+            if (!history.exists()) {
+                System.out.println("Файл не обнаружен!, создаем файл.");
+                history.createNewFile();
+            }
+            FileOutputStream fos = new FileOutputStream("src/main/resources/lib/chatHistory.txt");
+
+            BufferedOutputStream bos = new BufferedOutputStream(fos);
+
+            log.info("ЗАПИСЬ чата в файл: " + chatHistory.getText());
+            byte[] bytes = chatHistory.getText().getBytes();
+
+            bos.write(bytes);
+            bos.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readHistoryChat() throws IOException {
+        int posHistory = 100;
+        List<String> historyList = new ArrayList<>();
+        FileInputStream fis = new FileInputStream("src/main/resources/lib/chatHistory.txt");
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+
+        String temp;
+        while ((temp = br.readLine()) != null) {
+            historyList.add(temp);
+        }
+
+        if (historyList.size() > posHistory) {
+            for (int i = historyList.size() - posHistory; i <= (historyList.size() - 1); i++) {
+                chatHistory.appendText(historyList.get(i) + "\n");
+                log.info("Добавлено в чат= " + historyList.get(i) + "\n");
+            }
+        } else
+            for (String msg : historyList) {
+                chatHistory.appendText(msg + "\n");
+            }
+    }
 }
+
+
+
 
 
 

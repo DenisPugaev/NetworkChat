@@ -111,10 +111,16 @@ public class Network {
     public void waitMessage(ChatController chatController) {
 
         chatController.addUser(this.username);
+        try {
+            chatController.readHistoryChat();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Thread t = new Thread(() -> {
             try {
                 while (true) {
+
                     String message = in.readUTF();
                     log.info("Сообщение пришло с сервера: " + message);
 
@@ -131,11 +137,18 @@ public class Network {
                             String messageFromSender = parts[2];
 
                             if (sender.equals(username)) {
-                                sender = "Я";
+                                sender = username;
                             }
 
                             String finalSender = sender;
-                            Platform.runLater(() -> chatController.addMessage(finalSender, messageFromSender));
+
+                            Platform.runLater(() -> {
+                                chatController.addMessage(finalSender, messageFromSender);
+
+                            });
+                            chatController.writeHistoryChat();
+
+
                         }
                         case PRIVATE_MSG_CMD_PREFIX -> {
                             String[] parts = message.split("\\s+", 3);
@@ -170,6 +183,7 @@ public class Network {
 
                         }
                     }
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -177,6 +191,7 @@ public class Network {
         });
         t.setDaemon(true);
         t.start();
+
     }
 
     public DataOutputStream getOut() {
